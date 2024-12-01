@@ -1,0 +1,950 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>航海术语库</title>
+    <style>
+        :root {
+            --primary-bg: #ffffff;
+            --secondary-bg: #f5f5f7;
+            --text-primary: #1d1d1f;
+            --text-secondary: #86868b;
+            --accent-color: #0066cc;
+            --border-color: rgba(0,0,0,0.1);
+            --card-bg: #ffffff;
+            --hover-bg: #f5f5f7;
+            --shadow-color: rgba(0,0,0,0.1);
+            --delete-color: #ff3b30;
+            --transition-timing: cubic-bezier(0.4, 0, 0.2, 1);
+            --button-bg: #f5f5f7;
+            --button-hover: #e5e5e5;
+            --footer-border: rgba(0,0,0,0.1);
+            --accent-rgb: 0, 102, 204;
+            --scrollbar-bg: rgba(0,0,0,0.15);
+            --scrollbar-hover: rgba(0,0,0,0.25);
+        }
+
+        [data-theme="dark"] {
+            --primary-bg: #000000;
+            --secondary-bg: #1d1d1f;
+            --text-primary: #f5f5f7;
+            --text-secondary: #86868b;
+            --accent-color: #2997ff;
+            --border-color: rgba(255,255,255,0.1);
+            --card-bg: #1d1d1f;
+            --hover-bg: #2d2d2f;
+            --shadow-color: rgba(0,0,0,0.3);
+            --delete-color: #ff453a;
+            --button-bg: #323232;
+            --button-hover: #3d3d3d;
+            --footer-border: rgba(255,255,255,0.1);
+            --accent-rgb: 41, 151, 255;
+            --scrollbar-bg: rgba(255,255,255,0.2);
+            --scrollbar-hover: rgba(255,255,255,0.3);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Icons", "Helvetica Neue", Arial, sans-serif;
+            -webkit-font-smoothing: antialiased;
+            transition: background-color 0.5s var(--transition-timing),
+                      color 0.5s var(--transition-timing),
+                      border-color 0.5s var(--transition-timing),
+                      box-shadow 0.5s var(--transition-timing);
+        }
+
+        body {
+            background: var(--primary-bg);
+            color: var(--text-primary);
+            transition: all 0.3s ease;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            padding: 120px 20px;
+            background: linear-gradient(
+                180deg,
+                var(--secondary-bg) 0%,
+                var(--primary-bg) 100%
+            );
+            position: relative;
+            margin-bottom: 60px;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(
+                circle,
+                rgba(var(--accent-rgb), 0.1) 0%,
+                transparent 70%
+            );
+            animation: rotate 20s linear infinite;
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .title {
+            font-size: 56px;
+            font-weight: 600;
+            letter-spacing: -0.5px;
+            color: var(--text-primary);
+            margin-bottom: 16px;
+            opacity: 0;
+            transform: translateY(10px);
+            animation: fadeInUp 0.8s var(--transition-timing) forwards;
+        }
+
+        .subtitle {
+            font-size: 24px;
+            font-weight: 400;
+            color: var(--text-secondary);
+            letter-spacing: 0.2px;
+            opacity: 0;
+            transform: translateY(10px);
+            animation: fadeInUp 0.8s var(--transition-timing) 0.1s forwards;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .search-box {
+            position: relative;
+            max-width: 680px;
+            margin: 0 auto 40px;
+            padding: 0 20px;
+            opacity: 0;
+            transform: translateY(10px);
+            animation: fadeInUp 0.8s var(--transition-timing) 0.2s forwards;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 18px 50px;
+            font-size: 17px;
+            border: none;
+            border-radius: 14px;
+            background: var(--button-bg);
+            color: var(--text-primary);
+            transition: all 0.3s var(--transition-timing);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+
+        .search-input:focus {
+            background: var(--primary-bg);
+            box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+            outline: none;
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 35px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-secondary);
+            width: 20px;
+            height: 20px;
+        }
+
+        .upload-zone {
+            max-width: 680px;
+            margin: 0 auto 60px;
+            padding: 32px;
+            background: var(--secondary-bg);
+            border-radius: 14px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s var(--transition-timing);
+            opacity: 0;
+            transform: translateY(10px);
+            animation: fadeInUp 0.8s var(--transition-timing) 0.3s forwards;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .upload-zone:hover {
+            background: var(--primary-bg);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .upload-zone p {
+            margin: 0;
+            font-size: 16px;
+            font-weight: 500;
+        }
+
+        .upload-zone p:last-child {
+            margin-top: 8px;
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+
+        .terms-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 24px;
+            padding: 0 20px;
+            max-height: 70vh;
+            overflow-y: auto;
+            scrollbar-width: thin;
+            scrollbar-color: var(--scrollbar-bg) transparent;
+        }
+
+        .terms-grid::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .terms-grid::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .terms-grid::-webkit-scrollbar-thumb {
+            background: var(--scrollbar-bg);
+            border-radius: 4px;
+            border: 2px solid var(--primary-bg);
+        }
+
+        .terms-grid::-webkit-scrollbar-thumb:hover {
+            background: var(--scrollbar-hover);
+        }
+
+        .term-card {
+            background: var(--card-bg);
+            border-radius: 14px;
+            padding: 24px;
+            transition: all 0.3s var(--transition-timing);
+            position: relative;
+            border: 1px solid var(--border-color);
+        }
+
+        .term-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            border-color: transparent;
+        }
+
+        .term-name {
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            letter-spacing: -0.2px;
+        }
+
+        .term-english {
+            color: var(--accent-color);
+            font-size: 20px;
+            margin-bottom: 12px;
+            letter-spacing: -0.1px;
+        }
+
+        .term-definition {
+            color: var(--text-secondary);
+            font-size: 17px;
+            line-height: 1.5;
+            letter-spacing: 0.1px;
+        }
+
+        .theme-toggle {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 44px;
+            height: 44px;
+            border-radius: 22px;
+            background: var(--button-bg);
+            border: none;
+            box-shadow: 0 2px 8px var(--shadow-color);
+            color: var(--text-primary);
+            font-size: 24px;
+            cursor: pointer;
+            transition: all 0.3s var(--transition-timing);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+
+        .theme-toggle:hover {
+            background: var(--button-hover);
+            transform: scale(1.05);
+        }
+
+        .theme-toggle .icon {
+            position: absolute;
+            transition: all 0.5s var(--transition-timing);
+        }
+
+        .theme-toggle .sun-icon {
+            opacity: 0;
+            transform: rotate(90deg) scale(0);
+        }
+
+        [data-theme="dark"] .theme-toggle .sun-icon {
+            opacity: 1;
+            transform: rotate(0) scale(1);
+        }
+
+        [data-theme="dark"] .theme-toggle .moon-icon {
+            opacity: 0;
+            transform: rotate(-90deg) scale(0);
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 12px 24px;
+            background: var(--card-bg);
+            border-radius: 12px;
+            color: var(--text-primary);
+            box-shadow: 0 2px 8px var(--shadow-color);
+            z-index: 1000;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translate(-50%, 20px); }
+            to { opacity: 1; transform: translate(-50%, 0); }
+        }
+
+        .action-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin: 20px 0;
+        }
+
+        .action-button {
+            padding: 12px 24px;
+            border-radius: 20px;
+            font-size: 15px;
+            font-weight: 500;
+            border: none;
+            background: var(--button-bg);
+            color: var(--text-primary);
+            transition: all 0.3s var(--transition-timing);
+        }
+
+        .action-button:hover {
+            background: var(--button-hover);
+        }
+
+        .action-button.danger {
+            background: var(--delete-color);
+            color: white;
+        }
+
+        .action-button.danger:hover {
+            background: #ff4f45;
+        }
+
+        .footer {
+            margin-top: 60px;
+            padding: 20px;
+            text-align: center;
+            border-top: 1px solid var(--footer-border);
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+
+        .term-english-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+
+        .term-phonetic {
+            color: var(--text-secondary);
+            font-size: 14px;
+            font-style: italic;
+        }
+
+        .speak-button {
+            background: none;
+            border: none;
+            color: var(--accent-color);
+            cursor: pointer;
+            padding: 4px;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+        }
+
+        .speak-button:hover {
+            background: var(--button-bg);
+            transform: scale(1.1);
+        }
+
+        .speak-button svg {
+            width: 20px;
+            height: 20px;
+        }
+
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+
+        .loading-spinner {
+            width: 50px;
+            height: 50px;
+            border: 3px solid var(--card-bg);
+            border-radius: 50%;
+            border-top-color: var(--accent-color);
+            animation: spin 1s linear infinite;
+        }
+
+        .progress-text {
+            color: var(--text-primary);
+            margin-top: 10px;
+            text-align: center;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .progress-overlay {
+            position: fixed;
+            bottom: 20px;
+            right: 80px;
+            padding: 15px 20px;
+            background: var(--card-bg);
+            border-radius: 12px;
+            color: var(--text-primary);
+            box-shadow: 0 2px 8px var(--shadow-color);
+            border: none;
+            z-index: 999;
+            min-width: 200px;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from { transform: translateX(100px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        .progress-bar-container {
+            height: 4px;
+            background: var(--button-bg);
+            border-radius: 2px;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: var(--accent-color);
+            border-radius: 2px;
+        }
+
+        .progress-text {
+            font-size: 14px;
+            margin-bottom: 5px;
+        }
+
+        .progress-details {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin-top: 5px;
+        }
+
+        /* 添加苹果风格的滚动条 */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--button-bg);
+            border-radius: 5px;
+            border: 3px solid var(--primary-bg);
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--button-hover);
+        }
+
+        .icon-group {
+            display: flex;
+            justify-content: center;
+            gap: 56px;
+            margin-bottom: 48px;
+        }
+
+        .header-icon {
+            width: 80px;
+            height: 80px;
+            color: var(--text-primary);
+            opacity: 0.85;
+            transition: all 0.3s var(--transition-timing);
+        }
+
+        .header-icon:hover {
+            transform: scale(1.05);
+            color: var(--accent-color);
+            opacity: 1;
+        }
+
+        /* 简化图标动画 */
+        .ship-icon {
+            animation: rockShip 6s ease-in-out infinite;
+        }
+
+        .wave-icon {
+            animation: waveFlow 8s ease-in-out infinite;
+        }
+
+        @keyframes rockShip {
+            0%, 100% { transform: rotate(-2deg); }
+            50% { transform: rotate(2deg); }
+        }
+
+        @keyframes waveFlow {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-4px); }
+        }
+
+        /* 更新标题样式以配合图标 */
+        .title {
+            margin-top: 0;
+            font-size: 56px;
+            font-weight: 600;
+            letter-spacing: -0.5px;
+            color: var(--text-primary);
+            margin-bottom: 20px;
+        }
+
+        /* 优化色模式下的图标显示 */
+        [data-theme="dark"] .header-icon {
+            color: var(--accent-color);
+            opacity: 0.9;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1 class="title">航海术语库</h1>
+            <p class="subtitle">专业的航海术语查询工具</p>
+        </header>
+
+        <div class="search-box">
+            <svg class="search-icon" width="20" height="20" viewBox="0 0 20 20">
+                <path d="M9 17A8 8 0 1 1 9 1a8 8 0 0 1 0 16zm0-2A6 6 0 1 0 9 3a6 6 0 0 0 0 12zm8.5 2L14 13.5l2-2 3.5 3.5-2 2z" fill="currentColor"/>
+            </svg>
+            <input type="text" class="search-input" id="searchInput" placeholder="搜索术语...">
+        </div>
+
+        <div class="upload-zone" id="uploadZone">
+            <input type="file" id="fileInput" accept=".txt,.csv" style="display: none;">
+            <p>点击或拖拽文件上传</p>
+            <p style="color: var(--text-secondary); margin-top: 8px; font-size: 14px;">
+                支持 TXT、CSV 格式的双语对照文件
+            </p>
+        </div>
+
+        <div class="terms-grid" id="termsGrid">
+            <!-- 术语卡片将在这里动态生成 -->
+        </div>
+
+        <div class="action-buttons">
+            <button class="action-button danger" id="clearButton">
+                清空所有术语
+            </button>
+        </div>
+
+        <footer class="footer">
+            <p>© 2024 航海术语库 版权所有：吴林锋</p>
+            <p style="margin-top: 8px; font-size: 13px;">
+                专业的航海术语查询与管理工具
+            </p>
+        </footer>
+    </div>
+
+    <button class="theme-toggle" id="themeToggle">
+        <span class="icon moon-icon">🌓</span>
+        <span class="icon sun-icon">🌞</span>
+    </button>
+
+    <script>
+        // 初始化变量
+        let terms = JSON.parse(localStorage.getItem('marineTerms') || '[]');
+        const searchInput = document.getElementById('searchInput');
+        const uploadZone = document.getElementById('uploadZone');
+        const fileInput = document.getElementById('fileInput');
+        const termsGrid = document.getElementById('termsGrid');
+        const themeToggle = document.getElementById('themeToggle');
+        const clearButton = document.getElementById('clearButton');
+
+        // 替换原来的 speakText 函数
+        async function speakText(text) {
+            try {
+                if (!text) return;
+                
+                // 检测文本语言
+                const isEnglish = /^[a-zA-Z\s\-.,!?]+$/.test(text);
+                
+                const audio = new Audio();
+                // 根据语言选择不同的语音
+                const lang = isEnglish ? 'en' : 'zh-CN';
+                audio.src = `https://translate.google.com/translate_tts?ie=UTF-8&tl=${lang}&client=tw-ob&q=${encodeURIComponent(text)}`;
+                
+                await audio.play();
+                
+            } catch (error) {
+                console.error('语音播放错误:', error);
+                showToast('播放失败，请重试');
+            }
+        }
+
+        // 更新显示术语的函数
+        function displayTerms(termsToShow) {
+            termsGrid.innerHTML = '';
+            
+            if (termsToShow.length === 0) {
+                termsGrid.innerHTML = `
+                    <div style="text-align: center; grid-column: 1/-1; color: var(--text-secondary);">
+                        <p>未找到匹配的术语</p>
+                    </div>
+                `;
+                return;
+            }
+
+            termsToShow.forEach(term => {
+                const card = document.createElement('div');
+                card.className = 'term-card';
+                
+                // 使用 HTML 转义来处理特殊字符
+                const escapedEnglish = term.english ? term.english.replace(/[&<>"']/g, char => ({
+                    '&': '&amp;',
+                    '<': '&lt;',
+                    '>': '&gt;',
+                    '"': '&quot;',
+                    "'": '&#39;'
+                })[char]) : '';
+
+                const escapedName = term.name ? term.name.replace(/[&<>"']/g, char => ({
+                    '&': '&amp;',
+                    '<': '&lt;',
+                    '>': '&gt;',
+                    '"': '&quot;',
+                    "'": '&#39;'
+                })[char]) : '';
+
+                // 为中文和英文分别添加语音按钮
+                card.innerHTML = `
+                    <div class="term-name-container" style="display: flex; align-items: center; gap: 8px; margin-bottom: 12px;">
+                        <h3 class="term-name">${escapedName}</h3>
+                        <button class="speak-button" 
+                                onclick="event.stopPropagation(); 
+                                        const btn = this;
+                                        btn.disabled = true;
+                                        btn.style.opacity = '0.5';
+                                        speakText('${escapedName}')
+                                            .finally(() => {
+                                                btn.disabled = false;
+                                                btn.style.opacity = '1';
+                                            });">
+                            <svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16">
+                                <path d="M14,3.23V5.29C16.89,6.15 19,8.83 19,12C19,15.17 16.89,17.84 14,18.7V20.77C18,19.86 21,16.28 21,12C21,7.72 18,4.14 14,3.23M16.5,12C16.5,10.23 15.5,8.71 14,7.97V16C15.5,15.29 16.5,13.76 16.5,12M3,9V15H7L12,20V4L7,9H3Z"/>
+                            </svg>
+                        </button>
+                    </div>
+                    <div class="term-english-container">
+                        <p class="term-english">${escapedEnglish}</p>
+                        ${escapedEnglish ? `
+                            <span class="term-phonetic">${term.phonetic || ''}</span>
+                            <button class="speak-button" 
+                                    onclick="event.stopPropagation(); 
+                                            const btn = this;
+                                            btn.disabled = true;
+                                            btn.style.opacity = '0.5';
+                                            speakText('${escapedEnglish}')
+                                                .finally(() => {
+                                                    btn.disabled = false;
+                                                    btn.style.opacity = '1';
+                                                });">
+                                <svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16">
+                                    <path d="M14,3.23V5.29C16.89,6.15 19,8.83 19,12C19,15.17 16.89,17.84 14,18.7V20.77C18,19.86 21,16.28 21,12C21,7.72 18,4.14 14,3.23M16.5,12C16.5,10.23 15.5,8.71 14,7.97V16C15.5,15.29 16.5,13.76 16.5,12M3,9V15H7L12,20V4L7,9H3Z"/>
+                                </svg>
+                            </button>
+                        ` : ''}
+                    </div>
+                    ${term.definition ? `<p class="term-definition">${term.definition}</p>` : ''}
+                `;
+                termsGrid.appendChild(card);
+            });
+        }
+
+        // 添加显示加载提示的函数
+        function showLoading(message = '加载中...') {
+            const overlay = document.createElement('div');
+            overlay.className = 'loading-overlay';
+            overlay.innerHTML = `
+                <div>
+                    <div class="loading-spinner"></div>
+                    <div class="progress-text">${message}</div>
+                </div>
+            `;
+            document.body.appendChild(overlay);
+            return overlay;
+        }
+
+        function hideLoading(overlay) {
+            overlay.remove();
+        }
+
+        // 添加显示进度条的函数
+        function showProgress() {
+            const progressOverlay = document.createElement('div');
+            progressOverlay.className = 'progress-overlay';
+            progressOverlay.innerHTML = `
+                <div class="progress-text">正在加载音标...</div>
+                <div class="progress-bar-container">
+                    <div class="progress-bar"></div>
+                </div>
+                <div class="progress-details">
+                    <span class="progress-count">0/0</span>
+                    <span class="progress-percentage">0%</span>
+                </div>
+            `;
+            document.body.appendChild(progressOverlay);
+            return progressOverlay;
+        }
+
+        function updateProgress(overlay, current, total) {
+            const percentage = Math.round((current / total) * 100);
+            const progressBar = overlay.querySelector('.progress-bar');
+            const progressCount = overlay.querySelector('.progress-count');
+            const progressPercentage = overlay.querySelector('.progress-percentage');
+            
+            progressBar.style.width = `${percentage}%`;
+            progressCount.textContent = `${current}/${total}`;
+            progressPercentage.textContent = `${percentage}%`;
+        }
+
+        // 修改文件处理函数
+        async function handleFile(file) {
+            const loadingOverlay = showLoading('正在导入术语...');
+            const reader = new FileReader();
+            
+            reader.onload = async (event) => {
+                try {
+                    const content = event.target.result;
+                    const lines = content.split('\n').filter(line => line.trim());
+                    
+                    // 先批量导入所有术语，不等待音标
+                    const newTerms = lines.map(line => {
+                        const [name, english, definition] = line.split(/[\t,]/).map(part => part.trim());
+                        return { name, english, definition, phonetic: '' };
+                    }).filter(term => term.name && term.english);
+
+                    // 添加新术语到现有列表
+                    terms.push(...newTerms);
+                    
+                    // 先显示术语
+                    localStorage.setItem('marineTerms', JSON.stringify(terms));
+                    displayTerms(terms);
+                    showToast('文件导入成功');
+
+                    // 后台获取音标
+                    hideLoading(loadingOverlay);
+                    
+                    // 显示进度条
+                    const progressOverlay = showProgress();
+                    
+                    // 分批处理音标请求，每批 5 个
+                    const batchSize = 5;
+                    let processed = 0;
+                    
+                    for (let i = 0; i < newTerms.length; i += batchSize) {
+                        const batch = newTerms.slice(i, i + batchSize);
+                        await Promise.all(batch.map(async (term) => {
+                            try {
+                                const phonetic = await getPhonetic(term.english);
+                                term.phonetic = phonetic;
+                                processed++;
+                                updateProgress(progressOverlay, processed, newTerms.length);
+                            } catch (error) {
+                                console.warn(`获取"${term.english}"的音标失败:`, error);
+                                processed++;
+                                updateProgress(progressOverlay, processed, newTerms.length);
+                            }
+                        }));
+                        
+                        // 每处理完一批就更新显示和存储
+                        localStorage.setItem('marineTerms', JSON.stringify(terms));
+                        displayTerms(terms);
+                        
+                        // 添加较短的延迟，避免 API 限制
+                        await new Promise(resolve => setTimeout(resolve, 50));
+                    }
+                    
+                    // 完成后移除进度条
+                    setTimeout(() => {
+                        progressOverlay.remove();
+                        showToast('音标加载完成');
+                    }, 500);
+                    
+                } catch (error) {
+                    console.error('导入文件时发生错误:', error);
+                    showToast('导入文件时发生错误');
+                    hideLoading(loadingOverlay);
+                }
+            };
+
+            reader.onerror = () => {
+                hideLoading(loadingOverlay);
+                showToast('读取文件失败');
+            };
+
+            reader.readAsText(file);
+        }
+
+        // 优化获取音标的函数
+        async function getPhonetic(word) {
+            try {
+                const response = await fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${encodeURIComponent(word)}`);
+                
+                if (!response.ok) {
+                    throw new Error(`API 请求失败: ${response.status}`);
+                }
+
+                const data = await response.json();
+                
+                // 尝获取不同形式的音标
+                if (data && data[0]) {
+                    return data[0].phonetic || 
+                           (data[0].phonetics && data[0].phonetics[0] && data[0].phonetics[0].text) || 
+                           '';
+                }
+                return '';
+            } catch (error) {
+                console.warn(`获取音标失败: ${error.message}`);
+                return '';
+            }
+        }
+
+        // 显示提示
+        function showToast(message) {
+            const toast = document.createElement('div');
+            toast.className = 'toast';
+            toast.textContent = message;
+            document.body.appendChild(toast);
+            
+            setTimeout(() => {
+                toast.remove();
+            }, 2000);
+        }
+
+        // 主题切换
+        function toggleTheme() {
+            const currentTheme = document.documentElement.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            document.documentElement.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            document.body.style.transition = 'background-color 0.5s var(--transition-timing)';
+        }
+
+        // 事件监听
+        searchInput.addEventListener('input', (e) => {
+            const searchText = e.target.value.toLowerCase();
+            const filteredTerms = terms.filter(term => 
+                term.name.toLowerCase().includes(searchText) || 
+                term.english?.toLowerCase().includes(searchText) ||
+                term.definition?.toLowerCase().includes(searchText)
+            );
+            displayTerms(filteredTerms);
+        });
+
+        uploadZone.addEventListener('click', () => fileInput.click());
+        
+        fileInput.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (file) handleFile(file);
+        });
+
+        uploadZone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            uploadZone.style.borderColor = 'var(--accent-color)';
+            uploadZone.style.background = 'var(--hover-bg)';
+        });
+
+        uploadZone.addEventListener('dragleave', () => {
+            uploadZone.style.borderColor = '';
+            uploadZone.style.background = '';
+        });
+
+        uploadZone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            uploadZone.style.borderColor = '';
+            uploadZone.style.background = '';
+            const file = e.dataTransfer.files[0];
+            if (file) handleFile(file);
+        });
+
+        themeToggle.addEventListener('click', toggleTheme);
+
+        // 初始主题
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme) {
+            document.documentElement.setAttribute('data-theme', savedTheme);
+        } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            document.documentElement.setAttribute('data-theme', 'dark');
+        }
+
+        // 初始显示术语
+        displayTerms(terms);
+
+        // 清空所有术语
+        function clearAllTerms() {
+            if (confirm('确定要删除所有术语吗？此操作不可恢复。')) {
+                terms = [];
+                localStorage.setItem('marineTerms', JSON.stringify(terms));
+                displayTerms(terms);
+                showToast('已清空所有术语');
+            }
+        }
+
+        // 绑定清空按钮事件
+        clearButton.addEventListener('click', clearAllTerms);
+    </script>
+</body>
+</html>
